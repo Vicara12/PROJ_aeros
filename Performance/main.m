@@ -13,8 +13,7 @@ clc, clear all, close all
 
 % 1.1. Flight parameters
 m = 2000;                 % Mass [kg]
-Ixx = 1100;               % Plane inertia in x direction [kg*m^2]
-v0 = 100/3.6;               % Initial velocity [m/s]
+v0 = 100/3.6;             % Initial velocity [m/s]
 g = 9.81;                 % Gravity [N/kg]
 
 % 1.2. Geometry parameters
