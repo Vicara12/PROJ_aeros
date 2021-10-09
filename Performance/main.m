@@ -54,15 +54,11 @@ sigmaDbeta = 0.1;         % Sigma over beta derivative [ad]
 N = 1000;                 % Time discretization [ad]
 
 % 1.7. Trajectory BC parameters
-t12 = 50;                 % Time step position 1-2 [sec]
-T12 = 10000;               % Thrust position 1-2 [N]
-gamma12 = 1*pi/180;       % Climb angle position 1-2 [rad]
-acc12 = 1;                % STATIC [0] or DYNAMIC [1] flight
-
-t23 = 50;                 % Time step position 2-3 [sec]
-T23 = 10000;               % Thrust position 2-3 [N]
-gamma23 = 0*pi/180;       % Climb angle position 2-3 [rad]
-acc23 = 0;                % STATIC [0] or DYNAMIC [1] flight
+% TRAJ_XX = [ Maneuver time (sec) , Thrust (N), ...
+%          Climb angle [rad], STATIC (0) or DYNAMIC (1) ]
+traj_12 = [50,  10000,  1*pi/180,   1];
+traj_23 = [50,  10000,  0*pi/180,   0];
+traj_34 = [50,   1000, -1*pi/180,   1];
 
 %% ------------------------------------------------------------------------
 %                             2. CALCULUS
@@ -79,13 +75,19 @@ vect = [b, c, S, St, Sv, lt, hv, iwb, it, awb, at, av, tau_e, ...
 % 2.3. Trajectory determination
 % 2.3.1. Ascent Flight: POS 1-2
 BC_12 = [0 0 v0]; 
-gamma_12(1:N,1) = gamma12; time_12(1:N,1) = linspace(0,t12,N);
+gamma_12(1:N,1) = traj_12(3); time_12(1:N,1) = linspace(0,traj_12(1),N);
 [x_12,h_12,v_12,Cl_12,Cd_12] = ...
-    straight_flight(T12,g,S,Cd0,k,m*g,gamma12,1,1,time_12,acc12,BC_12);
+    straight_flight(traj_12(2),g,S,Cd0,k,m*g,traj_12(3),1,1,time_12,traj_12(4),BC_12);
 
 % 2.3.2. Straight Flight: POS 2-3
 BC_23 = [x_12(end), h_12(end), v_12(end)];
-gamma_23(1:N,1) = gamma23; time_23(1:N,1) = linspace(0,t23,N);
+gamma_23(1:N,1) = traj_23(3); time_23(1:N,1) = linspace(0,traj_23(1),N);
 [x_23,h_23,v_23,Cl_23,Cd_23] = ...
-    straight_flight(T23,g,S,Cd0,k,m*g,gamma23,1,1,time_23,acc23,BC_23);
+    straight_flight(traj_23(2),g,S,Cd0,k,m*g,traj_23(3),1,1,time_23,traj_23(4),BC_23);
+
+% 2.3.3. Descent Flight: POS 3-4
+BC_34 = [x_23(end), h_23(end), v_23(end)];
+gamma_34(1:N,1) = traj_34(3); time_34(1:N,1) = linspace(0,traj_34(1),N);
+[x_34,h_34,v_34,Cl_34,Cd_34] = ...
+    straight_flight(traj_34(2),g,S,Cd0,k,m*g,traj_34(3),1,1,time_34,traj_34(4),BC_34);
 
