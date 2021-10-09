@@ -53,3 +53,5 @@ vect = [b, c, S, St, Sv, lt, hv, iwb, it, awb, at, av, tau_e, ...
 
 % 2.2. Aerodynamic coefficients calculation
 [COEFF] = aerod_coeff(vect);
+
+% 2.3. Blablabla test
