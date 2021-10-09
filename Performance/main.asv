@@ -1,0 +1,43 @@
+%--------------------------------------------------------------------------
+%                   PEA - FLIGHT PERFORMANCE ANALYSIS
+%                   AUTHORS: Aerodynamics department 
+%                     fran.14hg@gmail.com, ..., ...
+%--------------------------------------------------------------------------
+%% MAIN
+clc, clear all, close all
+
+%% ------------------------------------------------------------------------
+%                               1. INPUT
+%           User definition of the different solver's inputs
+%--------------------------------------------------------------------------
+
+% Geometry parameters
+b   = sym('b', 'positive');          % Wing span
+c   = sym('c', 'positive');          % MAC 
+S   = sym('S', 'positive');          % Wing surface
+St  = sym('St','positive');          % Horizontal tail surface
+Sv  = sym('Sv','positive');          % Vertical tail surface
+lt  = sym('lt','positive');          % Distance from CM to tail (= lv)
+hv  = sym('hv','positive');          % Height vertical stabilizer
+
+% Aerodynamic parameters
+iwb = sym('iwb','real');             % LSN angle, wing+body
+it  = sym('it' ,'real');             % LSN angle, tail
+awb = sym('awb','real');             % Lift slope wing+body
+at  = sym('at' ,'real');             % Lift slope tail horizontal
+av  = sym('av' ,'real');             % Lift slope tail vertical
+tau_e = sym('tau_e','positive');     % Elevator efficiency
+tau_a = sym('tau_a','positive');     % Ailerons efficiency
+tau_v = sym('tau_v','positive');     % Rudder efficiency
+Cmacwb = sym('Cmacwb','real');       % Wing+body free moment coefficient
+eta_t = sym('eta_t','positive');     % Horizontal wind relation (vt/v)^2
+eta_v = sym('eta_v','positive');     % Vertical wind relation (v_v/v)^2   
+
+% Configuration parameters
+xcg = sym('xcg','real');             % Gravity center position (from cockpit), adimensional (MAC)
+xacwb = sym('xac','real');           % Wing+body aerod. center position (from cockpit), adimensional (MAC)
+
+% Interference parameters
+eps0 = sym('eps0','positive');              % Reference epsilon
+epsDalpha = sym('epsDalpha','real');        % Epsilon over alpha derivative
+sigmaDbeta = sym('sigmaDbeta','real');      % Sigma over beta derivative
