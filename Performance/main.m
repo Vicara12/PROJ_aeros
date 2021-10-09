@@ -53,10 +53,16 @@ sigmaDbeta = 0.1;         % Sigma over beta derivative [ad]
 % 1.6. Numerical parameters
 N = 1000;                 % Time discretization [ad]
 
-% 1.7. Boundary conditions parameters
+% 1.7. Trajectory BC parameters
 t12 = 50;                 % Time step position 1-2 [sec]
-T12 = 1000;               % Thrust position 1-2 [N]
+T12 = 10000;               % Thrust position 1-2 [N]
 gamma12 = 1*pi/180;       % Climb angle position 1-2 [rad]
+acc12 = 1;                % STATIC [0] or DYNAMIC [1] flight
+
+t23 = 50;                 % Time step position 2-3 [sec]
+T23 = 10000;               % Thrust position 2-3 [N]
+gamma23 = 0*pi/180;       % Climb angle position 2-3 [rad]
+acc23 = 0;                % STATIC [0] or DYNAMIC [1] flight
 
 %% ------------------------------------------------------------------------
 %                             2. CALCULUS
@@ -74,8 +80,12 @@ vect = [b, c, S, St, Sv, lt, hv, iwb, it, awb, at, av, tau_e, ...
 % 2.3.1. Ascent Flight: POS 1-2
 BC_12 = [0 0 v0]; 
 gamma_12(1:N,1) = gamma12; time_12(1:N,1) = linspace(0,t12,N);
-[x_12,h_12,v_12,Cl_12,Cd_12] = straight_flight(T12,g,S,Cd0,k,m*g,gamma12,1,1,time_12,BC_12);
+[x_12,h_12,v_12,Cl_12,Cd_12] = ...
+    straight_flight(T12,g,S,Cd0,k,m*g,gamma12,1,1,time_12,acc12,BC_12);
 
 % 2.3.2. Straight Flight: POS 2-3
-
+BC_23 = [x_12(end), h_12(end), v_12(end)];
+gamma_23(1:N,1) = gamma23; time_23(1:N,1) = linspace(0,t23,N);
+[x_23,h_23,v_23,Cl_23,Cd_23] = ...
+    straight_flight(T23,g,S,Cd0,k,m*g,gamma23,1,1,time_23,acc23,BC_23);
 
