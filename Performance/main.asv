@@ -56,7 +56,7 @@ N = 1000;                 % Time discretization [ad]
 % 1.7. Boundary conditions parameters
 t12 = 50;                 % Time step position 1-2 [sec]
 T12 = 1000;               % Thrust position 1-2 [N]
-gamma12 = 1*pi/180;       % Climb angle position 1-2 [rad]
+gamma12 = 15*pi/180;      % Climb angle
 
 %% ------------------------------------------------------------------------
 %                             2. CALCULUS
@@ -71,11 +71,8 @@ vect = [b, c, S, St, Sv, lt, hv, iwb, it, awb, at, av, tau_e, ...
 [COEFF] = aerod_coeff(vect);
 
 % 2.3. Trajectory determination
-% 2.3.1. Ascent Flight: POS 1-2
+% 2.3.1. Ascent Fligh: POS 1-2
 BC_12 = [0 0 v0]; 
-gamma_12(1:N,1) = gamma12; time_12(1:N,1) = linspace(0,t12,N);
-[x_12,h_12,v_12,Cl_12,Cd_12] = straight_flight(T12,g,S,Cd0,k,m*g,gamma12,1,1,time_12,BC_12);
-
-% 2.3.2. Straight Flight: POS 2-3
-
+gamma_12(:,1) = zeros(N,1); time_12(1:N,1) = linspace(0,t12,N);
+[x_12,h_12,v_12,Cl_12,Cd_12] = straight_flight(T12,g,S,Cd0,k,m*g,0,1,1,time_12,BC_12);
 
