@@ -1,7 +1,7 @@
 %--------------------------------------------------------------------------
 %                   PEA - FLIGHT PERFORMANCE ANALYSIS
 %                   AUTHORS: Aerodynamics department 
-%          fran.14hg@gmail.com, MARTA@gmail.com, V√çCTOR@gmail.com
+%          fran.14hg@gmail.com, MARTA@gmail.com, V√?CTOR@gmail.com
 %--------------------------------------------------------------------------
 %% MAIN
 clc, clear all, close all
@@ -55,11 +55,12 @@ N = 1000;                 % Time discretization [ad]
 % 1.7. Trajectory BC parameters
 % TRAJ_XX = [ Maneuver time (sec) , Thrust (N), ...
 %          Climb angle [rad], STATIC (0) or DYNAMIC (1) ]
-traj_12 = [50,  10000,  2*pi/180,   1];
-traj_23 = [50,  10000,  0*pi/180,   0];
-traj_34 = [50,   1000, -2*pi/180,   1];
-traj_45 = [50,  10000,  2*pi/180,   1];
-traj_56 = [50,  10000,  0*pi/180,   0];
+traj_12 = [50,     10000,    2*pi/180,   1]; % Ascent flight
+traj_23 = [50,     10000,    0*pi/180,   0]; % Straight flight
+traj_34 = [50,      1000,   -2*pi/180,   1]; % Descent flight
+traj_45 = [20,     10000,    2*pi/180,   1]; % Ascent recovery flight
+traj_56 = [20,     10000,    0*pi/180,   0]; % Straight recovery flight
+traj_67 = [45*60,  10000,    0*pi/180,   0]; % Waiting turn (ignore 4th comp)
 
 %% ------------------------------------------------------------------------
 %                             2. CALCULUS
@@ -67,11 +68,11 @@ traj_56 = [50,  10000,  0*pi/180,   0];
 %--------------------------------------------------------------------------
 
 % 2.1. Vector of the parameters
-vect = [b, c, S, St, Sv, lt, hv, iwb, it, awb, at, av, tau_e, ...
+vect_coeff = [b, c, S, St, Sv, lt, hv, iwb, it, awb, at, av, tau_e, ...
     tau_a, tau_v, Cmacwb, eta_t, eta_v, xcg, xacwb, eps0, epsDalpha, sigmaDbeta];
 
 % 2.2. Aerodynamic coefficients calculation
-[COEFF] = aerod_coeff(vect);
+[COEFF] = aerod_coeff(vect_coeff);
 
 % 2.3. Trajectory determination
 % 2.3.1. Ascent Flight: POS 1-2
@@ -104,6 +105,15 @@ gamma_56(1:N,1) = traj_56(3); time_56(1:N,1) = linspace(0,traj_56(1),N);
 [x_56,h_56,v_56,CL_56,Cd_56] = ...
     straight_flight(traj_56(2),g,S,Cd0,k,m*g,traj_56(3),1,1,time_56,traj_56(4),BC_56);
 
+% 2.3.6. Waiting Turn: POS 6-7
+vect_turn = [traj_67(2), Cd0, k, pi/60, atmos(BC_56(2)), S, g];
+BC_67 = [x_56(end), h_56(end), v_56(end)];
+gamma_67(1:N,1) = traj_67(3); time_67(1:N,1) = linspace(0,traj_67(1),N);
+[x_67,y_67,h_67,Xi_67,v_67,CL_67,Cd_67,mu_67,R_67,Xi_p_67] = ...
+    turn_equations(time_67,vect_turn,BC_67);
+
+voltes_totals = Xi_p_67*traj_67(1)/(2*pi);  % Completed 360∫ turns
+temps_volta = traj_67(1)/voltes_totals;     % Time per full turn [sec]
 
 %% ------------------------------------------------------------------------
 %                             3. PLOTTING
@@ -114,9 +124,9 @@ gamma_56(1:N,1) = traj_56(3); time_56(1:N,1) = linspace(0,traj_56(1),N);
 delta_e = -5:2:10;
 alpha_wb = 0:1:15;
  % 3.1.2 Plotting
-[p1,p2] = delta_e_plotting(delta_e,COEFF,alpha_wb);
+%[p1,p2] = delta_e_plotting(delta_e,COEFF,alpha_wb);
 
 % 3.2 Equilibrium Flight
 % Alpha wing-body range
-syms awb_e delta_ee ; 
-[delta_e_equilibrium] = delta_e_equilibrium(COEFF,awb_e,delta_ee); 
+%syms awb_e delta_ee ; 
+%[delta_e_equilibrium] = delta_e_equilibrium(COEFF,awb_e,delta_ee); 
