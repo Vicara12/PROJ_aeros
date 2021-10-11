@@ -112,12 +112,13 @@ gamma_56(1:N,1) = traj_56(3); time_56(1:N,1) = linspace(0,traj_56(1),N);
 y_56(1:N,1) = zeros(N,1);
 
 % 2.3.6. Waiting Turn: POS 6-7
-vect_turn = [traj_67(2), Cd0, k, pi/60, atmos(BC_56(2)), S, g];
+vect_turn = [traj_67(2), Cd0, k, pi/60, atmos(BC_56(2)), S, g, m];
 BC_67 = [x_56(end), h_56(end), v_56(end)];
 gamma_67(1:N,1) = traj_67(3); time_67(1:N,1) = linspace(0,traj_67(1),N);
-[x_67,y_67,h_67,Xi_67,v_67,CL_67,Cd_67,mu_67,R_67,Xi_p_67] = ...
+[x_67,y_67,h_67,Xi_67,v_67,CL_67,Cd_67,mu_67,R_67,Xi_p_67,T_67] = ...
     turn_equations(time_67,vect_turn,BC_67);
 
+traj_67(2) = T_67;                          % New value of thrust
 voltes_totals = Xi_p_67*traj_67(1)/(2*pi);  % Completed 360º turns
 temps_volta = traj_67(1)/voltes_totals;     % Time per full turn [sec]
 

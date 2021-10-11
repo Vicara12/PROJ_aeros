@@ -1,4 +1,4 @@
-function [x,y,h,Xi,v,CL,Cd,mu,R,Xi_p] = turn_equations(time,vect,BC)
+function [x,y,h,Xi,v,CL,Cd,mu,R,Xi_p,T] = turn_equations(time,vect,BC)
 
 % Input assignation
 T = vect(1);
@@ -8,6 +8,7 @@ Xi_p = vect(4); % Desired turn rate [rad/s]
 rho = vect(5);
 S = vect(6);
 g = vect(7);
+m = vect(8);
 v = BC(3);
 
 % Analytical equations resolution
@@ -23,6 +24,9 @@ if mu*180/pi > 25
     mu = 25/180*pi;
     Xi_p = tan(mu)*g/v;
     R = v/Xi_p;
+    CL = m*g/(cos(mu)*1/2*rho*v^2*S);
+    Cd = Cd0 + K*CL^2;
+    T = 1/2*rho*v^2*S*Cd;
 end    
     
 % Create vectors
