@@ -1,7 +1,7 @@
 %--------------------------------------------------------------------------
 %                   PEA - FLIGHT PERFORMANCE ANALYSIS
 %                   AUTHORS: Aerodynamics department 
-%          fran.14hg@gmail.com, MARTA@gmail.com, VÕCTOR@gmail.com
+%          fran.14hg@gmail.com, MARTA@gmail.com, V√çCTOR@gmail.com
 %--------------------------------------------------------------------------
 %% MAIN
 clc, clear all, close all
@@ -104,3 +104,19 @@ gamma_56(1:N,1) = traj_56(3); time_56(1:N,1) = linspace(0,traj_56(1),N);
 [x_56,h_56,v_56,CL_56,Cd_56] = ...
     straight_flight(traj_56(2),g,S,Cd0,k,m*g,traj_56(3),1,1,time_56,traj_56(4),BC_56);
 
+
+%% ------------------------------------------------------------------------
+%                             3. PLOTTING
+%        Aerodynamic coefficients calculation and performance analysis
+%--------------------------------------------------------------------------
+% 3.1 Plotting forces vs alpha_wb for differents delta_e
+ % 3.1.1 Inputs
+delta_e = -5:2:10;
+alpha_wb = 0:1:15;
+ % 3.1.2 Plotting
+[p1,p2] = delta_e_plotting(delta_e,COEFF,alpha_wb);
+
+% 3.2 Equilibrium Flight
+% Alpha wing-body range
+syms awb_e delta_ee ; 
+[delta_e_equilibrium] = delta_e_equilibrium(COEFF,awb_e,delta_ee); 
