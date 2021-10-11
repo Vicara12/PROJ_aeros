@@ -1,7 +1,7 @@
 %--------------------------------------------------------------------------
 %                   PEA - FLIGHT PERFORMANCE ANALYSIS
 %                   AUTHORS: Aerodynamics department 
-%          fran.14hg@gmail.com, MARTA@gmail.com, VÃ?CTOR@gmail.com
+% fran.14hg@gmail.com, marta.arnabatmartin0506@gmail.com, victor@gmail.com
 %--------------------------------------------------------------------------
 %% MAIN
 clc, clear all, close all
@@ -53,15 +53,7 @@ sigmaDbeta = 0.1;         % Sigma over beta derivative [ad]
 N = 1000;                 % Time discretization [ad]
 
 % 1.7. Trajectory BC parameters
-% TRAJ_XX = [ Maneuver time (sec) , Thrust (N), ...
-%          Climb angle [rad], STATIC (0) or DYNAMIC (1) ]
-traj_12 = [50,      5000,    2*pi/180,   1]; % Ascent flight
-traj_23 = [50,      5000,    0*pi/180,   0]; % Straight flight
-traj_34 = [50,      1000,   -2*pi/180,   1]; % Descent flight
-traj_45 = [20,      5000,    2*pi/180,   1]; % Ascent recovery flight
-traj_56 = [20,      1000,    0*pi/180,   1]; % Straight recovery flight
-traj_67 = [45*60,   5000,    0*pi/180,   0]; % Waiting turn (ignore 4th comp)
-traj_78 = [20,      1000,   -2*pi/180,   1]; % Descent recovery flight
+[traj_12,traj_23,traj_34,traj_45,traj_56,traj_67, traj_78] = trajectory();
 
 %% ------------------------------------------------------------------------
 %                             2. CALCULUS
@@ -76,72 +68,16 @@ vect_coeff = [b, c, S, St, Sv, lt, hv, iwb, it, awb, at, av, tau_e, ...
 [COEFF] = aerod_coeff(vect_coeff);
 
 % 2.3. Trajectory determination
-% 2.3.1. Ascent Flight: POS 1-2
-BC_12 = [0 0 v0]; 
-gamma_12(1:N,1) = traj_12(3); time_12(1:N,1) = linspace(0,traj_12(1),N);
-[x_12,h_12,v_12,CL_12,Cd_12] = ...
-    straight_flight(traj_12(2),g,S,Cd0,k,m*g,traj_12(3),1,1,time_12,traj_12(4),BC_12);
-y_12(1:N,1) = zeros(N,1);
-
-% 2.3.2. Straight Flight: POS 2-3
-BC_23 = [x_12(end), h_12(end), v_12(end)];
-gamma_23(1:N,1) = traj_23(3); time_23(1:N,1) = linspace(0,traj_23(1),N);
-[x_23,h_23,v_23,CL_23,Cd_23] = ...
-    straight_flight(traj_23(2),g,S,Cd0,k,m*g,traj_23(3),1,1,time_23,traj_23(4),BC_23);
-y_23(1:N,1) = zeros(N,1);
-
-% 2.3.3. Descent Flight: POS 3-4
-BC_34 = [x_23(end), h_23(end), v_23(end)];
-gamma_34(1:N,1) = traj_34(3); time_34(1:N,1) = linspace(0,traj_34(1),N);
-[x_34,h_34,v_34,CL_34,Cd_34] = ...
-    straight_flight(traj_34(2),g,S,Cd0,k,m*g,traj_34(3),1,1,time_34,traj_34(4),BC_34);
-y_34(1:N,1) = zeros(N,1);
-
-% 2.3.4. Ascent Recovery Flight: POS 4-5
-BC_45 = [x_34(end), h_34(end), v_34(end)];
-gamma_45(1:N,1) = traj_45(3); time_45(1:N,1) = linspace(0,traj_45(1),N);
-[x_45,h_45,v_45,CL_45,Cd_45] = ...
-    straight_flight(traj_45(2),g,S,Cd0,k,m*g,traj_45(3),1,1,time_45,traj_45(4),BC_45);
-y_45(1:N,1) = zeros(N,1);
-
-% 2.3.5. Straight Recovery Flight: POS 5-6
-BC_56 = [x_45(end), h_45(end), v_45(end)];
-gamma_56(1:N,1) = traj_56(3); time_56(1:N,1) = linspace(0,traj_56(1),N);
-[x_56,h_56,v_56,CL_56,Cd_56] = ...
-    straight_flight(traj_56(2),g,S,Cd0,k,m*g,traj_56(3),1,1,time_56,traj_56(4),BC_56);
-y_56(1:N,1) = zeros(N,1);
-
-% 2.3.6. Waiting Turn: POS 6-7
-vect_turn = [traj_67(2), Cd0, k, pi/60, atmos(BC_56(2)), S, g, m];
-BC_67 = [x_56(end), h_56(end), v_56(end)];
-gamma_67(1:N,1) = traj_67(3); time_67(1:N,1) = linspace(0,traj_67(1),N);
-[x_67,y_67,h_67,Xi_67,v_67,CL_67,Cd_67,mu_67,R_67,Xi_p_67,T_67] = ...
-    turn_equations(time_67,vect_turn,BC_67);
-
-traj_67(2) = T_67;                          % New value of thrust
-voltes_totals = Xi_p_67*traj_67(1)/(2*pi);  % Completed 360º turns
-temps_volta = traj_67(1)/voltes_totals;     % Time per full turn [sec]
-
-% 2.3.7. Descent Recovery Flight: POS 7-8
-BC_78 = [x_67(end), h_67(end), v_67(end)];
-gamma_78(1:N,1) = traj_78(3); time_78(1:N,1) = linspace(0,traj_78(1),N);
-[r_78,h_78,v_78,CL_78,Cd_78] = ...
-    straight_flight(traj_78(2),g,S,Cd0,k,m*g,traj_78(3),1,1,time_78,traj_78(4),BC_78);
-x_78 = x_67(end) + (r_78-r_78(1))*cos(Xi_67(end));
-y_78 = y_67(end) - (r_78-r_78(1))*sin(Xi_67(end));
+[x_12,y_12,h_12,v_12,CL_12,Cd_12, x_23,y_23,h_23,v_23,CL_23,Cd_23,x_34,y_34,h_34,v_34,CL_34,...
+    Cd_34,x_45,y_45,h_45,v_45,CL_45,Cd_45,x_56,y_56,h_56,v_56,CL_56,Cd_56, x_67,y_67,h_67,Xi_67,...
+    v_67,CL_67,Cd_67,mu_67,R_67,Xi_p_67,T_67, r_78,h_78,v_78,CL_78,Cd_78, x_78, y_78, temps_volta]...
+    = performance(traj_12,traj_23,traj_34,traj_45,traj_56,traj_67,traj_78,S,Cd0,k,m,g,v0,N);
 
 % 2.4. Assembly
-X = [x_12; x_23; x_34; x_45; x_56; x_67; x_78]; 
-Y = [y_12; y_23; y_34; y_45; y_56; y_67; y_78];
-H = [h_12; h_23; h_34; h_45; h_56; h_67; h_78];
-CL = [CL_12; CL_23; CL_34; CL_45; CL_56; CL_67; CL_78];
-Cd = [Cd_12; Cd_23; Cd_34; Cd_45; Cd_56; Cd_67; Cd_78];
-V = [v_12; v_23; v_34; v_45; v_56; v_67; v_78];
-T = [traj_12(2)*ones(N,1); traj_23(2)*ones(N,1); traj_34(2)*ones(N,1); ...
-    traj_45(2)*ones(N,1); traj_56(2)*ones(N,1); traj_67(2)*ones(N,1); ...
-    traj_78(2)*ones(N,1)];
-Time = linspace(0,traj_12(1)+traj_23(1)+traj_34(1)+traj_45(1)+traj_56(1)+ ...
-    traj_67(1)+traj_78(1),7*N)';
+[X,Y,H,CL,Cd,V,T,Time] = assembly(x_12, x_23, x_34, x_45, x_56, x_67, x_78,...
+    y_12, y_23, y_34, y_45, y_56, y_67, y_78, h_12, h_23, h_34, h_45, h_56, h_67, h_78,...
+    CL_12, CL_23, CL_34, CL_45, CL_56, CL_67, CL_78, Cd_12, Cd_23, Cd_34, Cd_45, Cd_56, Cd_67, Cd_78,...
+    v_12, v_23, v_34, v_45, v_56, v_67, v_78, traj_12,traj_23,traj_34,traj_45,traj_56,traj_67,traj_78, N);
 
 %% ------------------------------------------------------------------------
 %                             3. PLOTTING
@@ -149,13 +85,19 @@ Time = linspace(0,traj_12(1)+traj_23(1)+traj_34(1)+traj_45(1)+traj_56(1)+ ...
 %--------------------------------------------------------------------------
 % 3.1 Plotting forces vs alpha_wb for differents delta_e
  % 3.1.1 Inputs
-delta_e = -5:2:10;
-alpha_wb = 0:1:15;
-
+    delta_e = -5:2:10;      % Deflection elevator range
+    alpha_wb = 0:1:15;      % Alpha wing-body range
  % 3.1.2 Plotting
-%[p1,p2] = delta_e_plotting(delta_e,COEFF,alpha_wb);
-plotting(X,Y,H,T,CL,Cd,Time,V,S,m*g)
+    [p1,p2] = delta_e_plotting(delta_e,COEFF,alpha_wb);
+
+% 3.2 Plotting forces, velocity, height and position along the time 
+    plotting(X,Y,H,T,CL,Cd,Time,V,S,m*g)
 
 % 3.2 Equilibrium Flight
 % Alpha wing-body range
+
+
+
+
+
 
