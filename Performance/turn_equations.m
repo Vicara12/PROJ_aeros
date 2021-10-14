@@ -1,7 +1,7 @@
 function [x,y,h,Xi,v,CL,Cd,mu,R,Xi_p,T] = turn_equations(time,vect,BC)
 
 % Input assignation
-T = vect(1);
+T = vect(1)/BC(3);
 Cd0 = vect(2);
 K = vect(3);
 Xi_p = vect(4); % Desired turn rate [rad/s]

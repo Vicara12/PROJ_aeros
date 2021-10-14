@@ -1,7 +1,9 @@
 %--------------------------------------------------------------------------
 %                   PEA - FLIGHT PERFORMANCE ANALYSIS
 %                   AUTHORS: Aerodynamics department 
-% fran.14hg@gmail.com, marta.arnabatmartin0506@gmail.com, victor@gmail.com
+% fran.14hg@gmail.com, 
+% marta.arnabatmartin0506@gmail.com 
+% victorcarballoar@gmail.com
 %--------------------------------------------------------------------------
 %% MAIN
 clc, clear all, close all
@@ -13,17 +15,18 @@ clc, clear all, close all
 
 % 1.1. Flight parameters
 m = 2000;                 % Mass [kg]
-v0 = 100/3.6;             % Initial velocity [m/s]
+v0 = 160/3.6;             % Initial velocity [m/s]
 g = 9.81;                 % Gravity [N/kg]
+P_max = 560*1000;         % Maximum power [W]
 
 % 1.2. Geometry parameters
 b   = 11;                 % Wing span [m]
-c   = 1.2;                % MAC [m]
-S   = 16.2;               % Wing surface [m^2]
-St  = 12;                 % Horizontal tail surface [m^2]
-Sv  = 8;                  % Vertical tail surface [m^2]
-lt  = 5;                  % Distance from CM to tail (= lv) [m]
-hv  = 1;                  % Height vertical stabilizer [m]
+c   = 1.509;              % MAC [m]
+S   = 16.5;               % Wing surface [m^2]
+St  = 3.43;               % Horizontal tail surface [m^2]
+Sv  = 1.71;               % Vertical tail surface [m^2]
+lt  = 4.32;               % Distance from CM to tail (= lv) [m]
+hv  = 1.06;               % Height vertical stabilizer [m]
 
 % 1.3. Aerodynamic parameters
 iwb = 0.05;               % LSN angle, wing+body [rad]
@@ -53,7 +56,7 @@ sigmaDbeta = 0.1;         % Sigma over beta derivative [ad]
 N = 1000;                 % Time discretization [ad]
 
 % 1.7. Trajectory BC parameters
-[traj_12,traj_23,traj_34,traj_45,traj_56,traj_67, traj_78] = trajectory();
+[traj_12,traj_23,traj_34,traj_45,traj_56,traj_67, traj_78] = trajectory(P_max);
 
 %% ------------------------------------------------------------------------
 %                             2. CALCULUS
@@ -79,25 +82,24 @@ vect_coeff = [b, c, S, St, Sv, lt, hv, iwb, it, awb, at, av, tau_e, ...
     CL_12, CL_23, CL_34, CL_45, CL_56, CL_67, CL_78, Cd_12, Cd_23, Cd_34, Cd_45, Cd_56, Cd_67, Cd_78,...
     v_12, v_23, v_34, v_45, v_56, v_67, v_78, traj_12,traj_23,traj_34,traj_45,traj_56,traj_67,traj_78, N);
 
+% 2.5. Energy needed
+E = energy(T,V,Time); % kWh
+
 %% ------------------------------------------------------------------------
 %                             3. PLOTTING
 %        Aerodynamic coefficients calculation and performance analysis
 %--------------------------------------------------------------------------
+
 % 3.1 Plotting forces vs alpha_wb for differents delta_e
  % 3.1.1 Inputs
-    delta_e = -5:2:10;      % Deflection elevator range
-    alpha_wb = 0:1:15;      % Alpha wing-body range
+ delta_e = -5:2:10;      % Deflection elevator range
+ alpha_wb = 0:1:15;      % Alpha wing-body range
  % 3.1.2 Plotting
-    [p1,p2] = delta_e_plotting(delta_e,COEFF,alpha_wb);
+ %[p1,p2] = delta_e_plotting(delta_e,COEFF,alpha_wb);
 
 % 3.2 Plotting forces, velocity, height and position along the time 
-    plotting(X,Y,H,T,CL,Cd,Time,V,S,m*g)
+ plotting(X,Y,H,T,CL,Cd,Time,V,S,m*g)
 
 % 3.2 Equilibrium Flight
 % Alpha wing-body range
-
-
-
-
-
 

@@ -7,11 +7,11 @@ end
 
 % Trajectory plotting
 figure('Name','Trajectory')
-plot3(X,Y,H), grid on
+plot3(X/1000,Y/1000,H*3.28084), grid on
 title('Maneuver Trajectory')
-xlabel('Horizontal Position [m]')
-ylabel('Lateral Position [m]')
-zlabel('Height [m]')
+xlabel('Horizontal Position [km]')
+ylabel('Lateral Position [km]')
+zlabel('Height [ft]')
 
 % Aerodynamic coefficients and forces
 figure('Name','Aerodynamic Coefficients')
