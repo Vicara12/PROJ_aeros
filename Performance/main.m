@@ -27,6 +27,14 @@ St  = 3.43;               % Horizontal tail surface [m^2]
 Sv  = 1.71;               % Vertical tail surface [m^2]
 lt  = 4.32;               % Distance from CM to tail (= lv) [m]
 hv  = 1.06;               % Height vertical stabilizer [m]
+lf = 8.5;                 % Fuselage length
+df = 2.5;                 % Maximum height of the fuselage 
+Ss = 1.02*(lf*df + Sv);   % Projected surface  
+h1 = 2;                   % Height of fuselage at 1/4 lf    
+h2 = 0.95;                % Height of fuselage at 13/4 lf
+w1 = 1.3;                 % Width of fuselage at 1/4 lf
+w2 = 1;                   % Width of fuselage at 3/4 lf
+kb = 0.15;                % Coefficient given by the ratio betwwen lf and h 
 
 % 1.3. Aerodynamic parameters
 iwb = 0.38357;            % LSN angle, wing+body [rad]
@@ -46,6 +54,7 @@ k = 0.0563;               % Induced drag coefficient [ad]
 % 1.4. Configuration parameters
 xcg = 3.0/c;              % Gravity center position (from cockpit), [ad] (MAC)
 xacwb = (0.65+1.86)/c;    % Wing+body aerod. center position (from cockpit), [ad] (MAC)
+d = 0.5;                  % Distance betwwen cg and ac
 
 % 1.5. Interference parameters
 eps0 = 0.1;               % Reference epsilon [rad]
@@ -65,7 +74,8 @@ N = 50;                   % Time discretization [ad]
 
 % 2.1. Vector of the parameters
 vect_coeff = [b, c, S, St, Sv, lt, hv, iwb, it, awb, at, av, tau_e, ...
-    tau_a, tau_v, Cmacwb, eta_t, eta_v, xcg, xacwb, eps0, epsDalpha, sigmaDbeta];
+    tau_a, tau_v, Cmacwb, eta_t, eta_v, xcg, xacwb, eps0, epsDalpha, sigmaDbeta,...
+    h1, h2, w1, w2, lf, Ss, d, kb];
 
 % 2.2. Aerodynamic coefficients calculation
 [COEFF] = aerod_coeff(vect_coeff);

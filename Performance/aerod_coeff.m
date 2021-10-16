@@ -26,11 +26,20 @@ eta_v = sym('eta_v','positive');     % Vertical wind relation (v_v/v)^2
 % Configuration parameters
 xcg = sym('xcg','real');             % Gravity center position (from cockpit), adimensional (MAC)
 xacwb = sym('xac','real');           % Wing+body aerod. center position (from cockpit), adimensional (MAC)
-
+d = sym('d','real');
 % Interference parameters
 eps0 = sym('eps0','positive');              % Reference epsilon
 epsDalpha = sym('epsDalpha','real');        % Epsilon over alpha derivative
 sigmaDbeta = sym('sigmaDbeta','real');      % Sigma over beta derivative
+
+% Difine parameters for Cn_beta_fus
+h1 = sym('h1','positive');              % h1, w1 -> height and width of fuselage at 1/4 lf
+h2 = sym('h2','positive');              % h2, w2 -> height and width of fuselage at 3/4 lf
+w1 = sym('w1','positive');              
+w2 = sym('w2','positive');
+lf = sym('lf','positive');              % Fuselage length
+Ss = sym('Ss','positive');              % Projected surface  
+kb = sym('kb','positive');
 
 %% Longitudinal coefficients
 % Geometry relations
@@ -57,19 +66,22 @@ CY_delta_a = 0; % Approx
 CY_delta_r = -eta_v*sV*av*tau_v;
 
 % Roll torque
-Cl_beta = -eta_v*sV*hv/b*av*(1 - sigmaDbeta); % MILLORABLE!!!! REPASSAR
+Cl_beta = -eta_v*sV*hv/b*av*(1 - sigmaDbeta); 
 Cl_delta_a = tau_a/2;
 Cl_delta_r = -eta_v*sV*hv/b*av*tau_v;
 
-% Yaw torque
-Cn_beta = -CY_beta*lt/b;
-Cn_delta_a = 0; % MILLORABLE!!!! REPASSAR
+% Yaw torque 
+Kb = (kb-0.0285) + 0.2857*d/lf; 
+Cn_beta_fus = -0.96*Kb*Ss/S*lf/b*(h1/h2)^0.5*(w2/w1)^0.33; 
+Cn_beta = Cn_beta_fus -CY_beta*lt/b; % FALTA PONER CN_WB SOLO TENEMOS EN CUENTA EL CN_V!!!!
+Cn_delta_a = 0; 
 Cn_delta_r = -CY_delta_r*lt/b;
 
 %% MATRIX OF COEFFICIENTS
 % Vector of symbolic parameters
 vect_symb = [b, c, S, St, Sv, lt, hv, iwb, it, awb, at, av, tau_e, ...
-    tau_a, tau_v, Cmacwb, eta_t, eta_v, xcg, xacwb, eps0, epsDalpha, sigmaDbeta];
+    tau_a, tau_v, Cmacwb, eta_t, eta_v, xcg, xacwb, eps0, epsDalpha, sigmaDbeta,...
+    h1, h2, w1, w2, lf, Ss, d];
 
 % Definition of the matrix
 COEFF_symb = [
