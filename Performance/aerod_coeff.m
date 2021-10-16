@@ -81,7 +81,7 @@ Cn_delta_r = -CY_delta_r*lt/b;
 % Vector of symbolic parameters
 vect_symb = [b, c, S, St, Sv, lt, hv, iwb, it, awb, at, av, tau_e, ...
     tau_a, tau_v, Cmacwb, eta_t, eta_v, xcg, xacwb, eps0, epsDalpha, sigmaDbeta,...
-    h1, h2, w1, w2, lf, Ss, d];
+    h1, h2, w1, w2, lf, Ss, d, kb];
 
 % Definition of the matrix
 COEFF_symb = [
