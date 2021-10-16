@@ -111,7 +111,7 @@ E = energy(T,V,Time); % kWh
  %[p1,p2] = delta_e_plotting(delta_e,COEFF,alpha_wb);
 
 % 3.2 Plotting forces, velocity, height and position along the time 
- plotting(X,Y,H,T,ANGLES,CL,Cd,Time,V,S,m*g)
+plotting(X,Y,H,T,ANGLES,CL,Cd,Time,V,S,m*g)
 
 % 3.2 Equilibrium Flight
 % Alpha wing-body range

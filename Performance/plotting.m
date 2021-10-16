@@ -57,7 +57,6 @@ title('Longitudinal Angles')
 ylabel('Elevator Angle [º]')
 yyaxis right
 plot(Time,ANGLES(:,1))
-legend("delta","alpha")
 ylabel('Attack Angle [º]')
 xlabel('Time [sec]')
 legend('\delta_e','\alpha')
@@ -69,7 +68,7 @@ plot(Time,ANGLES(:,2)*180/pi), hold on
 plot(Time,ANGLES(:,4)*180/pi), hold on
 plot(Time,ANGLES(:,5)*180/pi), grid on
 title('Lateral-directional angles')
-legend('\beta','\delta_a','delta_r')
+legend('\beta','\delta_a','\delta_r')
 ylabel('Degrees [º]')
 xlabel('Time [sec]')
 xlim([0 Time(end)])
