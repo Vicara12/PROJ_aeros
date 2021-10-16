@@ -29,23 +29,23 @@ lt  = 4.32;               % Distance from CM to tail (= lv) [m]
 hv  = 1.06;               % Height vertical stabilizer [m]
 
 % 1.3. Aerodynamic parameters
-iwb = 0.05;               % LSN angle, wing+body [rad]
-it  = 0.05;               % LSN angle, tail [rad]
-awb = 2*pi;               % Lift slope wing+body [rad^-1]
-at  = 2*pi;               % Lift slope tail horizontal [rad^-1]
-av  = 2*pi;               % Lift slope tail vertical [rad^-1]
-tau_e = 3.25;             % Elevator efficiency [rad^-1]
-tau_a = 3.25;             % Ailerons efficiency [rad^-1]
-tau_v = 3.25;             % Rudder efficiency [rad^-1]
-Cmacwb = 0.1;             % Wing+body free moment coefficient [ad]
+iwb = 0.38357;            % LSN angle, wing+body [rad]
+it  = 0.01187;            % LSN angle, tail [rad]
+awb = 4.3644;             % Lift slope wing+body [rad^-1]
+at  = 3.2664;             % Lift slope tail horizontal [rad^-1]
+av  = 3.2664;             % Lift slope tail vertical [rad^-1]
+tau_e = 3.2310;           % Elevator efficiency [rad^-1]
+tau_a = 3.2534;           % Ailerons efficiency [rad^-1]
+tau_v = 3.2310;           % Rudder efficiency [rad^-1]
+Cmacwb = -0.05333;        % Wing+body free moment coefficient [ad]
 eta_t = 0.95;             % Horizontal wind relation (vt/v)^2 [ad]
 eta_v = 0.95;             % Vertical wind relation (v_v/v)^2  [ad]
-Cd0 = 0.012;              % Parasit drag coefficient [ad]
-k = 0.015;                % Induced drag coefficient [ad]
+Cd0 = 0.0093;             % Parasit drag coefficient [ad]
+k = 0.0563;               % Induced drag coefficient [ad]
 
 % 1.4. Configuration parameters
-xcg = 4;                  % Gravity center position (from cockpit), [ad] (MAC)
-xacwb = 5;                % Wing+body aerod. center position (from cockpit), [ad] (MAC)
+xcg = 3.0/c;              % Gravity center position (from cockpit), [ad] (MAC)
+xacwb = (0.65+1.86)/c;    % Wing+body aerod. center position (from cockpit), [ad] (MAC)
 
 % 1.5. Interference parameters
 eps0 = 0.1;               % Reference epsilon [rad]
@@ -53,7 +53,7 @@ epsDalpha = 0.1;          % Epsilon over alpha derivative [ad]
 sigmaDbeta = 0.1;         % Sigma over beta derivative [ad]
 
 % 1.6. Numerical parameters
-N = 1000;                 % Time discretization [ad]
+N = 50;                   % Time discretization [ad]
 
 % 1.7. Trajectory BC parameters
 [traj_12,traj_23,traj_34,traj_45,traj_56,traj_67, traj_78] = trajectory(P_max);
@@ -77,12 +77,15 @@ vect_coeff = [b, c, S, St, Sv, lt, hv, iwb, it, awb, at, av, tau_e, ...
     = performance(traj_12,traj_23,traj_34,traj_45,traj_56,traj_67,traj_78,S,Cd0,k,m,g,v0,N);
 
 % 2.4. Assembly
-[X,Y,H,CL,Cd,V,T,Time] = assembly(x_12, x_23, x_34, x_45, x_56, x_67, x_78,...
+[X,Y,H,CL,Cd,V,T,Mu,Time] = assembly(x_12, x_23, x_34, x_45, x_56, x_67, x_78, mu_67, ...
     y_12, y_23, y_34, y_45, y_56, y_67, y_78, h_12, h_23, h_34, h_45, h_56, h_67, h_78,...
     CL_12, CL_23, CL_34, CL_45, CL_56, CL_67, CL_78, Cd_12, Cd_23, Cd_34, Cd_45, Cd_56, Cd_67, Cd_78,...
     v_12, v_23, v_34, v_45, v_56, v_67, v_78, traj_12,traj_23,traj_34,traj_45,traj_56,traj_67,traj_78, N);
 
-% 2.5. Energy needed
+% 2.5. Control surfaces position
+[ANGLES] = control_surfaces(COEFF, CL, Mu);
+
+% 2.6. Energy needed
 E = energy(T,V,Time); % kWh
 
 %% ------------------------------------------------------------------------
