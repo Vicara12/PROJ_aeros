@@ -27,6 +27,7 @@ eta_v = sym('eta_v','positive');     % Vertical wind relation (v_v/v)^2
 xcg = sym('xcg','real');             % Gravity center position (from cockpit), adimensional (MAC)
 xacwb = sym('xac','real');           % Wing+body aerod. center position (from cockpit), adimensional (MAC)
 d = sym('d','real');
+
 % Interference parameters
 eps0 = sym('eps0','positive');              % Reference epsilon
 epsDalpha = sym('epsDalpha','real');        % Epsilon over alpha derivative

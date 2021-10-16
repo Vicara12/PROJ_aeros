@@ -1,4 +1,4 @@
-function plotting(X,Y,H,T,Cl,Cd,Time,v,S,W)
+function plotting(X,Y,H,T,ANGLES,Cl,Cd,Time,v,S,W)
 
 % Density evolution
 for i = 1:length(H)
@@ -49,19 +49,30 @@ ylabel('Drag & Thrust [N]')
 legend('L','T','D')
 xlim([0 Time(end)])
 
-% Equilibrium angles
-% figure('Name','Equilibrium angles')
-% yyaxis left
-% plot(Time,delta_eq), grid on
-% title('Equilibrium Angles')
-% ylabel('Elevator Angle [º]')
-% yyaxis right
-% plot(Time,alphawb_eq-iwb*180/pi)
-% legend("delta","alpha")
-% ylabel('Attack Angle [º]')
-% xlabel('Time [sec]')
-% legend('\delta_e','\alpha')
-% xlim([0 Time(end)])
+% Longitudinal equilibrium angles
+figure('Name','Longitudinal angles')
+yyaxis left
+plot(Time,ANGLES(:,3)*180/pi), grid on
+title('Longitudinal Angles')
+ylabel('Elevator Angle [º]')
+yyaxis right
+plot(Time,ANGLES(:,1))
+legend("delta","alpha")
+ylabel('Attack Angle [º]')
+xlabel('Time [sec]')
+legend('\delta_e','\alpha')
+xlim([0 Time(end)])
+
+% Lateral equilibrium angles
+figure('Name','Lateral-directional angles')
+plot(Time,ANGLES(:,2)*180/pi), hold on
+plot(Time,ANGLES(:,4)*180/pi), hold on
+plot(Time,ANGLES(:,5)*180/pi), grid on
+title('Lateral-directional angles')
+legend('\beta','\delta_a','delta_r')
+ylabel('Degrees [º]')
+xlabel('Time [sec]')
+xlim([0 Time(end)])
 
 % Load factor
 figure('Name','Load Factor')
