@@ -15,6 +15,6 @@ function [X,Y,H,CL,Cd,V,T,Mu,Time] = assembly(x_12, x_23, x_34, x_45, x_56, x_67
     Mu = [zeros(5*N,1); mu_67*ones(N,1); zeros(N,1)];
     Time = linspace(0,traj_12(1)+traj_23(1)+traj_34(1)+traj_45(1)+traj_56(1)+ ...
         traj_67(1)+traj_78(1),7*N)';
-    
+
 end
 

@@ -17,7 +17,7 @@ clc, clear all, close all
 m = 2000;                 % Mass [kg]
 v0 = 160/3.6;             % Initial velocity [m/s]
 g = 9.81;                 % Gravity [N/kg]
-P_max = 560*1000;         % Maximum power [W]
+P_max = 220*1000;         % Maximum required power [W]
 
 % 1.2. Geometry parameters
 b   = 11;                 % Wing span [m]
@@ -48,8 +48,8 @@ tau_v = 3.2310;           % Rudder efficiency [rad^-1]
 Cmacwb = -0.05333;        % Wing+body free moment coefficient [ad]
 eta_t = 0.95;             % Horizontal wind relation (vt/v)^2 [ad]
 eta_v = 0.95;             % Vertical wind relation (v_v/v)^2  [ad]
-Cd0 = 0.0093;             % Parasit drag coefficient [ad]
-k = 0.0563;               % Induced drag coefficient [ad]
+Cd0 = 0.015;              % Parasit drag coefficient [ad] (0.009)
+k = 0.08;                 % Induced drag coefficient [ad]
 
 % 1.4. Configuration parameters
 xcg = 3.0/c;              % Gravity center position (from cockpit), [ad] (MAC)
@@ -62,7 +62,7 @@ epsDalpha = 0.1;          % Epsilon over alpha derivative [ad]
 sigmaDbeta = 0.1;         % Sigma over beta derivative [ad]
 
 % 1.6. Numerical parameters
-N = 50;                   % Time discretization [ad]
+N = 11;                   % Time discretization [ad]
 
 % 1.7. Trajectory BC parameters
 [traj_12,traj_23,traj_34,traj_45,traj_56,traj_67, traj_78] = trajectory(P_max);

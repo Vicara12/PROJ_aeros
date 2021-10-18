@@ -28,10 +28,10 @@ xlim([0 Time(end)])
 
 % Velocity
 figure('Name','Velocity')
-plot(Time,v), grid on
+plot(Time,v*3.6), grid on
 title('Velocity')
 xlabel('Time [sec]')
-ylabel('v [m/sec]')
+ylabel('v [km/sec]')
 xlim([0 Time(end)])
 
 % Forces
@@ -56,7 +56,7 @@ plot(Time,ANGLES(:,3)*180/pi), grid on
 title('Longitudinal Angles')
 ylabel('Elevator Angle [º]')
 yyaxis right
-plot(Time,ANGLES(:,1))
+plot(Time,ANGLES(:,1)*180/pi)
 ylabel('Attack Angle [º]')
 xlabel('Time [sec]')
 legend('\delta_e','\alpha')

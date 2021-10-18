@@ -26,14 +26,14 @@ if acc == 1
         f = @(tv,X) [ -X(3)*cos(gamma);
             X(3)*sin(gamma);
             g/W*(P/X(3)-0.5*atmos(X(2))*X(3)^2*S*(Cd0+k*(-W.*cos(gamma) ./ (0.5*atmos(X(2))*X(3)^2*S))^2) - W*sin(gamma))];
-    end
+    end 
 end
 
 % ODE numerical resolution
 [~,X]=ode45(f,time,BC);
 x(:,1) = X(:,1);
 h(:,1) = X(:,2);
-v(:,1) = X(:,3);
+v(:,1) = X(:,3);   
 
 % Density evolution
 for i = 1:length(h)
