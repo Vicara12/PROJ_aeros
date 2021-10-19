@@ -23,8 +23,12 @@ plot(Time,Cd), grid on
 ylabel('Drag Coefficient')
 legend('Cl','Cd')
 title('Aerodynamic Coefficients')
-xlabel('Time [sec]')
 xlim([0 Time(end)])
+
+xticks([0, linspace(Time(end)/16, Time(end)-Time(end)/16, 7), Time(end)]);
+xticklabels({'t_0','Asc.','Cruise','Desc.','Asc. Rec.', ...
+    'Straight Rec.','Turning','Desc. Rec.','t_{max}'})
+xlabel('Flight segment')
 
 % Velocity
 figure('Name','Velocity')

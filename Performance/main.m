@@ -31,13 +31,13 @@ lf = 8.5;                 % Fuselage length
 df = 2.5;                 % Maximum height of the fuselage 
 Ss = 1.02*(lf*df + Sv);   % Projected surface  
 h1 = 2;                   % Height of fuselage at 1/4 lf    
-h2 = 0.95;                % Height of fuselage at 13/4 lf
+h2 = 0.95;                % Height of fuselage at 3/4 lf
 w1 = 1.3;                 % Width of fuselage at 1/4 lf
 w2 = 1;                   % Width of fuselage at 3/4 lf
 kb = 0.15;                % Coefficient given by the ratio betwwen lf and h 
 
 % 1.3. Aerodynamic parameters
-iwb = 0.38357;            % LSN angle, wing+body [rad]
+iwb = 0.03835;            % LSN angle, wing+body [rad]
 it  = 0.01187;            % LSN angle, tail [rad]
 awb = 4.3644;             % Lift slope wing+body [rad^-1]
 at  = 3.2664;             % Lift slope tail horizontal [rad^-1]
