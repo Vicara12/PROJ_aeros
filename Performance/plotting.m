@@ -24,7 +24,6 @@ ylabel('Drag Coefficient')
 legend('Cl','Cd')
 title('Aerodynamic Coefficients')
 xlim([0 Time(end)])
-
 xticks([0, linspace(Time(end)/16, Time(end)-Time(end)/16, 7), Time(end)]);
 xticklabels({'t_0','Asc.','Cruise','Desc.','Asc. Rec.', ...
     'Straight Rec.','Turning','Desc. Rec.','t_{max}'})
@@ -34,9 +33,12 @@ xlabel('Flight segment')
 figure('Name','Velocity')
 plot(Time,v*3.6), grid on
 title('Velocity')
-xlabel('Time [sec]')
-ylabel('v [km/sec]')
+ylabel('v [km/h]')
 xlim([0 Time(end)])
+xticks([0, linspace(Time(end)/16, Time(end)-Time(end)/16, 7), Time(end)]);
+xticklabels({'t_0','Asc.','Cruise','Desc.','Asc. Rec.', ...
+    'Straight Rec.','Turning','Desc. Rec.','t_{max}'})
+xlabel('Flight segment')
 
 % Forces
 figure('Name','Forces')
@@ -48,10 +50,13 @@ title('Forces over the plane')
 yyaxis right
 plot(Time,T,'m'), hold on;
 plot(Time,0.5*rho.*v.^2*S.*Cd,'-')
-xlabel('Time [sec]')
 ylabel('Drag & Thrust [N]')
 legend('L','T','D')
 xlim([0 Time(end)])
+xticks([0, linspace(Time(end)/16, Time(end)-Time(end)/16, 7), Time(end)]);
+xticklabels({'t_0','Asc.','Cruise','Desc.','Asc. Rec.', ...
+    'Straight Rec.','Turning','Desc. Rec.','t_{max}'})
+xlabel('Flight segment')
 
 % Longitudinal equilibrium angles
 figure('Name','Longitudinal angles')
@@ -62,9 +67,12 @@ ylabel('Elevator Angle [º]')
 yyaxis right
 plot(Time,ANGLES(:,1)*180/pi)
 ylabel('Attack Angle [º]')
-xlabel('Time [sec]')
 legend('\delta_e','\alpha')
 xlim([0 Time(end)])
+xticks([0, linspace(Time(end)/16, Time(end)-Time(end)/16, 7), Time(end)]);
+xticklabels({'t_0','Asc.','Cruise','Desc.','Asc. Rec.', ...
+    'Straight Rec.','Turning','Desc. Rec.','t_{max}'})
+xlabel('Flight segment')
 
 % Lateral equilibrium angles
 figure('Name','Lateral-directional angles')
@@ -74,15 +82,21 @@ plot(Time,ANGLES(:,5)*180/pi), grid on
 title('Lateral-directional angles')
 legend('\beta','\delta_a','\delta_r')
 ylabel('Degrees [º]')
-xlabel('Time [sec]')
 xlim([0 Time(end)])
+xticks([0, linspace(Time(end)/16, Time(end)-Time(end)/16, 7), Time(end)]);
+xticklabels({'t_0','Asc.','Cruise','Desc.','Asc. Rec.', ...
+    'Straight Rec.','Turning','Desc. Rec.','t_{max}'})
+xlabel('Flight segment')
 
 % Load factor
 figure('Name','Load Factor')
 plot(Time,0.5*rho.*v.^2*S.*Cl/W), grid on
 title('Load Factor')
-xlabel('Time [sec]')
 ylabel('n [L/W]')
 xlim([0 Time(end)])
+xticks([0, linspace(Time(end)/16, Time(end)-Time(end)/16, 7), Time(end)]);
+xticklabels({'t_0','Asc.','Cruise','Desc.','Asc. Rec.', ...
+    'Straight Rec.','Turning','Desc. Rec.','t_{max}'})
+xlabel('Flight segment')
 
 end

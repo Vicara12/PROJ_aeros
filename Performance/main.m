@@ -48,11 +48,11 @@ tau_v = 3.2310;           % Rudder efficiency [rad^-1]
 Cmacwb = -0.05333;        % Wing+body free moment coefficient [ad]
 eta_t = 0.95;             % Horizontal wind relation (vt/v)^2 [ad]
 eta_v = 0.95;             % Vertical wind relation (v_v/v)^2  [ad]
-Cd0 = 0.015;              % Parasit drag coefficient [ad] (0.009)
+Cd0 = 0.015;              % Parasite drag coefficient [ad] (0.009)
 k = 0.08;                 % Induced drag coefficient [ad]
 
 % 1.4. Configuration parameters
-xcg = 3.0/c;              % Gravity center position (from cockpit), [ad] (MAC)
+xcg = 3/c;                % Gravity center position (from cockpit), [ad] (MAC)
 xacwb = (0.65+1.86)/c;    % Wing+body aerod. center position (from cockpit), [ad] (MAC)
 d = 0.5;                  % Distance betwwen cg and ac
 
@@ -62,7 +62,7 @@ epsDalpha = 0.1;          % Epsilon over alpha derivative [ad]
 sigmaDbeta = 0.1;         % Sigma over beta derivative [ad]
 
 % 1.6. Numerical parameters
-N = 11;                   % Time discretization [ad]
+N = 10;                   % Time discretization [ad]
 
 % 1.7. Trajectory BC parameters
 [traj_12,traj_23,traj_34,traj_45,traj_56,traj_67, traj_78] = trajectory(P_max);
@@ -104,15 +104,14 @@ E = energy(T,V,Time); % kWh
 %--------------------------------------------------------------------------
 
 % 3.1 Plotting forces vs alpha_wb for differents delta_e
- % 3.1.1 Inputs
- delta_e = -5:2:10;      % Deflection elevator range
+% 3.1.1 Inputs
+delta_e = -5:2:10;      % Deflection elevator range
  alpha_wb = 0:1:15;      % Alpha wing-body range
- % 3.1.2 Plotting
- %[p1,p2] = delta_e_plotting(delta_e,COEFF,alpha_wb);
+% 3.1.2 Plotting
+%[p1,p2] = delta_e_plotting(delta_e,COEFF,alpha_wb);
 
 % 3.2 Plotting forces, velocity, height and position along the time 
 plotting(X,Y,H,T,ANGLES,CL,Cd,Time,V,S,m*g)
 
-% 3.2 Equilibrium Flight
-% Alpha wing-body range
-
+% 3.3. Neutral point [adimensional with MAC]
+N0 = xacwb + at/awb*eta_t*St/S*lt/c*(1-epsDalpha);
