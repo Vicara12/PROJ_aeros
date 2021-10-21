@@ -15,6 +15,10 @@ function [p1,p2] = delta_e_plotting(delta_e,COEFF,alpha_wb)
     % Cm_delta_e = -at*eta_t*Vt*tau_e;
 %------------------------------------------------------------------------------------
 
+% Deg to rad
+delta_e = deg2rad(delta_e);
+alpha_wb = deg2rad(alpha_wb);
+
 % Definition of coefficients
 Cl = zeros(1,length(alpha_wb),length(delta_e)); 
 Cm = zeros(1,length(alpha_wb),length(delta_e)); 

@@ -106,7 +106,7 @@ E = energy(T,V,Time); % kWh
 % 3.1 Plotting forces vs alpha_wb for differents delta_e
 % 3.1.1 Inputs
 delta_e = -5:2:10;      % Deflection elevator range
- alpha_wb = 0:1:15;      % Alpha wing-body range
+ alpha_wb = -5:1:15;      % Alpha wing-body range
 % 3.1.2 Plotting
 %[p1,p2] = delta_e_plotting(delta_e,COEFF,alpha_wb);
 
