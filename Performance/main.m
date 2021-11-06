@@ -22,12 +22,14 @@ P_max = 220*1000;         % Maximum required power [W]
 % 1.2. Geometry parameters
 b   = 11;                 % Wing span [m]
 c   = 1.509;              % MAC [m]
+ce  = 0.25;               % Elevator chord [m] (IMPROVE!)
 S   = 16.5;               % Wing surface [m^2]
 St  = 3.43;               % Horizontal tail surface [m^2]
 Sv  = 1.71;               % Vertical tail surface [m^2]
+Se  = 1.00;               % Elevator surface (IMPROVE!)
 lt  = 4.32;               % Distance from CM to tail (= lv) [m]
 hv  = 1.06;               % Height vertical stabilizer [m]
-lf = 8.5;                 % Fuselage length
+lf = 8.5;                 % Fuselage length [m]
 df = 2.5;                 % Maximum height of the fuselage 
 Ss = 1.02*(lf*df + Sv);   % Projected surface  
 h1 = 2;                   % Height of fuselage at 1/4 lf    
@@ -54,17 +56,24 @@ k = 0.08;                 % Induced drag coefficient [ad]
 % 1.4. Configuration parameters
 xcg = 3/c;                % Gravity center position (from cockpit), [ad] (MAC)
 xacwb = (0.65+1.86)/c;    % Wing+body aerod. center position (from cockpit), [ad] (MAC)
-d = 0.5;                  % Distance betwwen cg and ac
+d = 0.5;                  % Distance between COM and AC
 
 % 1.5. Interference parameters
 eps0 = 0.1;               % Reference epsilon [rad]
 epsDalpha = 0.1;          % Epsilon over alpha derivative [ad]
 sigmaDbeta = 0.1;         % Sigma over beta derivative [ad]
 
-% 1.6. Numerical parameters
+% 1.6. Trim parameters (TAB)
+G = -1;                   % Gear relation [m^-1] (IMPROVE!)
+Ch_0 = 0;                 % Hinge free coefficient
+Ch_alpha_wb = -0.295;     % Hinge AoA coefficient
+Ch_delta_e = -0.59;       % Hinge elevator coefficient
+Ch_delta_t = -0.5;        % Hinge tab coefficent (IMPROVE!)
+
+% 1.7. Numerical parameters
 N = 10;                   % Time discretization [ad]
 
-% 1.7. Trajectory BC parameters
+% 1.8. Trajectory BC parameters
 [traj_12,traj_23,traj_34,traj_45,traj_56,traj_67, traj_78] = trajectory(P_max);
 
 %% ------------------------------------------------------------------------
@@ -103,15 +112,27 @@ E = energy(T,V,Time); % kWh
 %        Aerodynamic coefficients calculation and performance analysis
 %--------------------------------------------------------------------------
 
-% 3.1 Plotting forces vs alpha_wb for differents delta_e
-% 3.1.1 Inputs
-delta_e = -5:2:10;      % Deflection elevator range
- alpha_wb = -5:1:15;      % Alpha wing-body range
-% 3.1.2 Plotting
-%[p1,p2] = delta_e_plotting(delta_e,COEFF,alpha_wb);
+% 3.1. Plotting of aircraft aerodynamic curves
+% 3.1.1. Inputs
+delta_e = -5:2:10;          % Deflection elevator range
+alpha_wb = -5:1:15;         % Alpha wing-body range
 
-% 3.2 Plotting forces, velocity, height and position along the time 
+% 3.1.2. Plotting
+coeff_plotting(delta_e,COEFF,alpha_wb);
+
+% 3.2. Plotting forces, velocity, height and position along the time 
 plotting(X,Y,H,T,ANGLES,CL,Cd,Time,V,S,m*g)
 
 % 3.3. Neutral point [adimensional with MAC]
 N0 = xacwb + at/awb*eta_t*St/S*lt/c*(1-epsDalpha);
+N0_f = N0 + 1/awb*COEFF(2,3)/Ch_delta_e*Ch_alpha_wb;
+
+% 3.4. Plotting lever force
+% 3.4.1. Input
+delta_t = 0:0.2:1;          % Plot for the cruise flight [deg]
+vel = [0 400];              % Plot for the cuirse flight [km/h]
+
+% 3.4.2. Plotting
+TAB = [G, Ch_0, Ch_alpha_wb, Ch_delta_e, Ch_delta_t,eta_t,Se,ce,m*g,S,iwb,it];
+lever_force(TAB,COEFF,H,V,Time,delta_t,vel,N)
+

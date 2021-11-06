@@ -1,4 +1,4 @@
-function [p1,p2] = delta_e_plotting(delta_e,COEFF,alpha_wb)
+function coeff_plotting(delta_e,COEFF,alpha_wb)
 
 %------------------------------------------------------------------------------------
 % Remember 
@@ -33,7 +33,7 @@ Cm = zeros(1,length(alpha_wb),length(delta_e));
 % Plotting lift coefficient
     figure(1)
     for i  = 1:length(delta_e)
-        p1(i) = plot(alpha_wb,Cl(1,:,i));
+        plot(alpha_wb,Cl(1,:,i));
         hold on
     end
     
@@ -46,7 +46,7 @@ Cm = zeros(1,length(alpha_wb),length(delta_e));
 % Plotting moment coefficient
     figure(2)
     for i =  1:length(delta_e)
-        p2(i) = plot(alpha_wb,Cm(1,:,i));
+        plot(alpha_wb,Cm(1,:,i));
         hold on 
     end
     
