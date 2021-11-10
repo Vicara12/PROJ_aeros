@@ -22,11 +22,11 @@ P_max = 220*1000;         % Maximum required power [W]
 % 1.2. Geometry parameters
 b   = 11;                 % Wing span [m]
 c   = 1.509;              % MAC [m]
-ce  = 0.25;               % Elevator chord [m] (IMPROVE!)
+ce  = 0.20;               % Elevator chord [m] (IMPROVE!)
 S   = 16.5;               % Wing surface [m^2]
 St  = 3.43;               % Horizontal tail surface [m^2]
 Sv  = 1.71;               % Vertical tail surface [m^2]
-Se  = 1.00;               % Elevator surface (IMPROVE!)
+Se  = 0.686;              % Elevator surface
 lt  = 4.32;               % Distance from CM to tail (= lv) [m]
 hv  = 1.06;               % Height vertical stabilizer [m]
 lf = 8.5;                 % Fuselage length [m]
