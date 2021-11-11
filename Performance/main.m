@@ -23,7 +23,7 @@ P_max = 220*1000;         % Maximum required power [W]
 b   = 11;                 % Wing span [m]
 c   = 1.509;              % MAC [m]
 ce  = 0.20;               % Elevator chord [m] (IMPROVE!)
-S   = 16.5;               % Wing surface [m^2]
+S   = 16.5;               % Wing surface [m^2] (S = 15.8)
 St  = 3.43;               % Horizontal tail surface [m^2]
 Sv  = 1.71;               % Vertical tail surface [m^2]
 Se  = 0.686;              % Elevator surface
@@ -36,7 +36,7 @@ h1 = 2;                   % Height of fuselage at 1/4 lf
 h2 = 0.95;                % Height of fuselage at 3/4 lf
 w1 = 1.3;                 % Width of fuselage at 1/4 lf
 w2 = 1;                   % Width of fuselage at 3/4 lf
-kb = 0.15;                % Coefficient given by the ratio betwwen lf and h 
+kb = 0.15;                % Coefficient given by the ratio between lf and h 
 
 % 1.3. Aerodynamic parameters
 iwb = 0.03835;            % LSN angle, wing+body [rad]
@@ -50,8 +50,8 @@ tau_v = 3.2310;           % Rudder efficiency [rad^-1]
 Cmacwb = -0.05333;        % Wing+body free moment coefficient [ad]
 eta_t = 0.95;             % Horizontal wind relation (vt/v)^2 [ad]
 eta_v = 0.95;             % Vertical wind relation (v_v/v)^2  [ad]
-Cd0 = 0.015;              % Parasite drag coefficient [ad] (0.009)
-k = 0.08;                 % Induced drag coefficient [ad]
+Cd0 = 0.015;              % Parasite drag coefficient [ad] ( Cd0_w = 0.009, Cd0_f = 0.021 )
+k = 0.08;                 % Induced drag coefficient [ad] (k = 0.06)
 
 % 1.4. Configuration parameters
 xcg = 3/c;                % Gravity center position (from cockpit), [ad] (MAC)
