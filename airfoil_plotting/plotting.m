@@ -3,6 +3,10 @@ function plotting(v)
 % DATA MATRIX columns
 %  alpha     CL        CD       CDp       Cm    Top Xtr Bot Xtr   Cpmin    Chinge    XCp    
 
+set(0,'defaulttextInterpreter','latex');
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
+set(groot, 'defaultLegendInterpreter','latex');
+
 % Legend string
 V = strrep(v,'_','\_');
 
@@ -14,9 +18,13 @@ for i = 1:length(v)
     CL = DATA(:,2);
     plot(alpha,CL), hold on
 end
-title('Lift coefficient'), grid on
+title('\textbf{Lift coefficient}'), grid on
 legend(V,'Location','southeast','FontSize',7)
-xlabel('\alpha [º]'), ylabel('C_L')
+xlabel('$\alpha [^\circ]$'), ylabel('$C_l$')
+
+% Legend for the flap plot
+legend('FLAP: $-15^\circ$', 'FLAP:  $-7^\circ$', 'FLAP:  $0^\circ$', ...
+    'FLAP:  $+7^\circ$', 'FLAP:  $+15^\circ$', 'Location','southeast','FontSize',7)
 
 % CD PLOT
 figure('Name','Drag coefficient')
@@ -26,9 +34,9 @@ for i = 1:length(v)
     CD = DATA(:,3);
     plot(CL,CD), hold on
 end
-title('Drag coefficient'), grid on
+title('\textbf{Drag coefficient}'), grid on
 legend(V,'Location','northwest','FontSize',7)
-xlabel('C_L'), ylabel('C_D')
+xlabel('$C_l$'), ylabel('$C_d$')
 
 % CM PLOT
 figure('Name','Torque coefficient')
@@ -38,8 +46,8 @@ for i = 1:length(v)
     Cm = DATA(:,5);      
     plot(alpha,Cm), hold on
 end
-title('Pitch torque coefficient'), grid on
+title('\textbf{Pitch torque coefficient}'), grid on
 legend(V,'Location','northwest','FontSize',7)
-xlabel('\alpha [º]'), ylabel('C_m')
+xlabel('$\alpha [^\circ]$'), ylabel('$C_m$')
 
 end
